@@ -1,0 +1,86 @@
+{
+    "swagger": "2.0",
+    "info": {
+       "version": "1.0.0",
+       "title": "Test Users API"
+    },
+    "host": "localhost:1337",
+    "schemes": [
+       "http"
+    ],
+    "consumes": [
+       "application/json"
+    ],
+    "produces": [
+       "application/json"
+    ],
+    "securityDefinitions": {
+       "Bearer": {
+          "type": "apiKey",
+          "name": "Authorization",
+          "in": "header"
+       }
+    },
+    "paths": {
+       "/test": {
+          "get": {
+             "description": "Get Users details",
+             "responses": {
+                "200": {
+                   "description": "successful operation VV"
+                }
+             }
+          }
+       },
+       "/api/auth/me": {
+          "get": {
+             "description": "Get Users details",
+             "security": [
+                {
+                   "Bearer": []
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "successful operation vvvv"
+                },
+                "400": {
+                   "description": "Invalid status value"
+                }
+             }
+          }
+       },
+       "/api/auth/signin": {
+          "post": {
+             "description": "Get Users details",
+             "produces": [
+                "application/json"
+             ],
+             "parameters": [
+                {
+                   "name": "email",
+                   "in": "body",
+                   "description": "user email id",
+                   "required": true,
+                   "type": "string"
+                },
+                {
+                   "name": "password",
+                   "in": "body",
+                   "description": "users pwd",
+                   "required": true,
+                   "type": "string"
+                }
+             ],
+             "responses": {
+                "200": {
+                   "description": "successful operation vvvv"
+                },
+                "400": {
+                   "description": "Invalid status value"
+                }
+             }
+          }
+       }
+    }
+ }

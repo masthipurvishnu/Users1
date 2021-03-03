@@ -1,1 +1,49 @@
 #Readme.me
+
+# Git ignore 
+/node_modules/
+*.js
+*.js.map
+
+
+# Created 
+Routes
+Handlers -- ?
+Users Schema
+Mongoose calls
+
+Pending:
+Swagger
+    1. swagger configuration
+    2. swagger ui using bootprint
+Logger - splunk
+Unit Testing F/W Setup
+Unit Test Cases
+
+
+# Swagger
+
+1. Swagger API Defination/Generating the swagger specification
+2. Swagger UI - bootprint
+```
+1. Terminal 1: tsc -w 
+2. Terminal 2: run the api (npn run dev or node bin/www.ts)
+3. Terminal 3: 
+$ npm install -g swagger
+$ swagger
+$ swagger docs
+$ swagger project edit
+
+4. 
+```
+Another approach
+npm i swagger-ui-express to install Swagger UI Express.
+
+
+https://mherman.org/blog/swagger-and-nodejs/
+npm install swagger-jsdoc --save
+
+BootPrint UI:
+npm install -g bootprint
+npm install -g bootprint-openapi
+bootprint openapi http://petstore.swagger.io/v2/swagger.json target
