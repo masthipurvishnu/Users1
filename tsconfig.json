@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "module": "commonjs",
+      "sourceMap": true,
+      "typeRoots": [
+          "node_modules/koa-body",
+          "node_modules/@types",
+          "src/typings"
+        ],
+    },
+    "exclude": [
+        "node_modules", 
+        "**/*.spec.ts"
+    ]
+  }
+  

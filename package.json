@@ -1,0 +1,31 @@
+{
+  "name": "users1",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node src/app.ts",
+    "start": "ts-node dist/app.js",
+    "build": "tsc -p ."
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/masthipurvishnu/Users1.git"
+  },
+  "bugs": {
+    "url": "https://github.com/masthipurvishnu/Users1/issues"
+  },
+  "homepage": "https://github.com/masthipurvishnu/Users1#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "graceful-fs": "^4.2.4",
+    "mongoose": "^5.11.18",
+    "node-uuid": "^1.4.8"
+  },
+  "resolutions": {
+    "graceful-fs": "^4.2.4"
+  }
+}
