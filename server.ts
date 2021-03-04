@@ -1,7 +1,5 @@
 import express = require('express')
 import bodyParser = require('body-parser')
-// var swaggerJSDoc = require('swagger-jsdoc');
-// var swaggerDocument = JSON.parse(this.swaggerData);
 // import the sagger lib
 import swaggerUi = require('swagger-ui-express');
 import fs = require('fs');
@@ -16,7 +14,30 @@ let swaggerData: any = fs.readFileSync(swaggerFile, 'utf8');
 let swaggerDocument = JSON.parse(swaggerData);
 /* Swagger files end */
 
+import authRoutes from './routes/authRoutes'
+import { authMiddleware } from './authMiddleware';
 
+app.use(function (req, res, next){
+    // console.log('headers', req.headers)
+    next();
+})
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+app.use(authMiddleware)
+app.use('/api/auth', authRoutes)
+// / swagger docs
+app.use('/api/docs', swaggerUi.serve,
+                    swaggerUi.setup(swaggerDocument, null, null)
+        );
+
+app.get('/test', function(req, res) {
+    res.send({message:"test api successfully called VV"})
+})
+
+export default app;
+
+// var swaggerJSDoc = require('swagger-jsdoc');
+// var swaggerDocument = JSON.parse(this.swaggerData);
 // var swaggerDefinition = {
 //     info: {
 //       title: 'Node Swagger API VV',
@@ -39,30 +60,9 @@ let swaggerDocument = JSON.parse(swaggerData);
 //   // initialize swagger-jsdoc
 //   var swaggerSpec = swaggerJSDoc(options);
 // *********************** swagger definition *********************** 
-import authRoutes from './routes/authRoutes'
-import { authMiddleware } from './authMiddleware';
-
-app.use(function (req, res, next){
-    // console.log('headers', req.headers)
-    next();
-})
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
-app.use(authMiddleware)
-app.use('/api/auth', authRoutes)
-// / swagger docs
-app.use('/api/docs', swaggerUi.serve,
-                    swaggerUi.setup(swaggerDocument, null, null)
-        );
-
-app.get('/test', function(req, res) {
-    res.send({message:"test api successfully called VV"})
-})
-
 // serve swagger
 // app.get('api/swagger/swagger.json', function(req, res) {
 //     res.setHeader('Content-Type', 'application/json');
 //     res.send(swaggerSpec);
 //   });
   
-export default app;
