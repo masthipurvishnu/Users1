@@ -33,22 +33,37 @@ router.post('/signin', function(req, res){
         if(foundUser.password !== req.body.password){
             return res.status(403).send({message: 'email or password incorrect'}) 
         }
-
         Session.create({user: foundUser._id, sid: uuid.v1()}, function(err, createdSession){
             console.log('===================1')
-
             if(err || !createdSession) {
                 return res.status(401).send(err || "error creating session")
             }
-
             return res.send({token: createdSession.sid})
         })
-
-
-        // return res.send(foundUser)
     })
-    
-    // res.send('sign in called')
+});
+
+// domain : dummy domain
+// user id: email of the user
+// password : password for the user
+router.post('/login', function(req, res){
+    User.findOne({
+        email: req.body.user
+    }, function(err, foundUser){
+        if(err){
+            return res.status(401).send(err || 'error sigining in')
+        }
+        if(foundUser.password !== req.body.password){
+            return res.status(403).send({message: 'email or password incorrect'}) 
+        }
+        Session.create({user: foundUser._id, sid: uuid.v1()}, function(err, createdSession){
+            console.log('===================1')
+            if(err || !createdSession) {
+                return res.status(401).send(err || "error creating session")
+            }
+            return res.send({token: createdSession.sid})
+        })
+    })
 });
 
 // isAuthenticated - first handler 
@@ -58,7 +73,6 @@ router.post('/signin', function(req, res){
 // second handler 
 // 2. If the authenicaton fails, the route returns error message.
 router.get('/me', isAuthencated, function(req, res){
-    console.log(req.user)
     User.findById({_id: req.user._id}, function(err, foundUser){
         if(err || !foundUser){
             res.status(403).send({message: "Error finding the user"})

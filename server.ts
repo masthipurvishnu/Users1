@@ -18,7 +18,11 @@ import authRoutes from './routes/authRoutes'
 import { authMiddleware } from './authMiddleware';
 
 app.use(function (req, res, next){
-    // console.log('headers', req.headers)
+    console.log('---------------------------------------------------')
+    // console.log('headers - ', req.headers)
+    console.log('authorization - ', req.headers.authorization)
+    console.log('request-body - ', req.body)
+    console.log('---------------------------------------------------')
     next();
 })
 app.use(bodyParser.urlencoded({extended: true}))
@@ -33,6 +37,30 @@ app.use('/api/docs', swaggerUi.serve,
 app.get('/test', function(req, res) {
     res.send({message:"test api successfully called VV"})
 })
+
+app.post('/greet', function(req, res){
+    var name = req.body.name;
+    greet(name)
+        .then(function(result){
+            res.send(result);
+        }, function(err){
+            console.log("promis reject 1- ", err);
+            res.status(400).send(err)
+        })
+})
+function greet(name) {
+    console.log("name 1- ", name);
+    return new Promise(function(resolve, reject){
+        if(name) {
+            resolve({message: `Hello ${name} ..!`});
+            console.log("name 2- ", name);
+        } else {
+            reject({message: new Error('Error in reading input')});
+            console.log("name 3- ", name);
+        }
+        console.log("name 4- ", name);
+    })
+}
 
 export default app;
 

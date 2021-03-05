@@ -2,19 +2,38 @@ import { Session } from './model/Session'
 import {Request, Response} from 'express'
 
 export function authMiddleware(req:Request, res:Response, next:Function) {
-    console.log("&&&&&&&&&&&&&&&&&&&&&&&&")
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&&&")
     Session.findOne({sid: req.header('Authorization')})
             .populate('user')
             .exec(function(err, foundSession){
                 if(foundSession) {
                     req.user = foundSession.user
                     req['isAuthenticated'] = true;
-                    console.log("&&&&&&&&&&&&&&&&&&&&&&&& 1 - ", foundSession.user)
+                    console.log("Authorization-Signed-in User- ", foundSession.user)
                     return next()
                 } else {
                     req['isAuthencated'] = false;
                     req.user = null;
-                    console.log("&&&&&&&&&&&&&&&&&&&&&&&& 1 - null", foundSession)
+                    console.log("Authorization-User not found - foundSession - ", foundSession)
+                    return next()
+                }
+            })
+}
+
+export function authMiddleware_1(req:Request, res:Response, next:Function) {
+    // console.log("&&&&&&&&&&&&&&&&&&&&&&&&")
+    Session.findOne({sid: req.body.token})
+            .populate('user')
+            .exec(function(err, foundSession){
+                if(foundSession) {
+                    req.user = foundSession.user
+                    req['isAuthenticated'] = true;
+                    console.log("Authorization-Signed-in User- ", foundSession.user)
+                    return next()
+                } else {
+                    req['isAuthencated'] = false;
+                    req.user = null;
+                    console.log("Authorization-User not found - foundSession - ", foundSession)
                     return next()
                 }
             })
