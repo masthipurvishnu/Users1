@@ -2,7 +2,6 @@ import { Session } from './model/Session'
 import {Request, Response} from 'express'
 
 export function authMiddleware(req:Request, res:Response, next:Function) {
-    // console.log("&&&&&&&&&&&&&&&&&&&&&&&&")
     Session.findOne({sid: req.header('Authorization')})
             .populate('user')
             .exec(function(err, foundSession){
@@ -21,19 +20,18 @@ export function authMiddleware(req:Request, res:Response, next:Function) {
 }
 
 export function authMiddleware_1(req:Request, res:Response, next:Function) {
-    // console.log("&&&&&&&&&&&&&&&&&&&&&&&&")
     Session.findOne({sid: req.body.token})
             .populate('user')
             .exec(function(err, foundSession){
                 if(foundSession) {
                     req.user = foundSession.user
                     req['isAuthenticated'] = true;
-                    console.log("Authorization-Signed-in User- ", foundSession.user)
+                    console.log("authMiddleware_1 Authorization-Signed-in User- ", foundSession.user)
                     return next()
                 } else {
                     req['isAuthencated'] = false;
                     req.user = null;
-                    console.log("Authorization-User not found - foundSession - ", foundSession)
+                    console.log("authMiddleware_1 Authorization-User not found - foundSession - ", foundSession)
                     return next()
                 }
             })

@@ -1,125 +1,248 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-       "version": "1.0.0",
-       "title": "Sonic API documentaion",
-       "description": "This is a sample server for a sonic apis",
-       "termsOfService": "http://example.com/terms/",
-       "contact": {
-          "name": "Sonic API Support",
-          "url": "http://www.example.com/support",
-          "email": "support@example.com"
-       }
-    },
-    "servers": [
-       {
-          "url": "http://localhost:1337",
-          "description": "Optional server description, e.g. Main (production) server"
-       }
-    ],
-    "components": {
-       "securitySchemes": {
-          "bearerAuth": {
-             "type": "http",
-             "scheme": "bearer",
-             "bearerFormat": "JWT"
-          }
-       }
-    },
-    "paths": {
-       "/api/auth/login": {
-          "post": {
-             "summary": "User login with SOEID or FID in AD",
-             "requestBody": {
-                "required": true,
-                "content": {
-                   "application/json": {
-                      "schema": {
-                         "type": "object",
-                         "properties": {
-                            "domain": {
-                               "type": "string"
-                            },
-                            "user": {
-                               "type": "string"
-                            },
-                            "password": {
-                               "type": "string"
-                            }
-                         }
-                      }
-                   }
-                }
-             },
-             "responses": {
-                "200": {
-                   "description": "successful operation",
-                   "content": {
-                      "application/json": {
-                         "schema": {
-                            "type": "object",
-                            "properties": {
-                               "token": {
-                                  "type": "string",
-                                  "example": "e9029fc0-7d49-11eb-9141-0fb14601c83d"
-                               }
-                            }
-                         }
-                      }
-                   }
-                },
-                "400": {
-                   "description": "The specified user ID/password incorrect",
-                   "content": {
-                      "application/json": {
-                         "schema": {
-                            "type": "object",
-                            "properties": {
-                               "message": {
-                                  "type": "string",
-                                  "example": "user id or password incorrect"
-                               }
-                            }
-                         }
-                      }
-                   }
-                },
-                "404": {
-                   "description": "A user with the specified ID was not found."
-                },
-                "default": {
-                   "description": "Unexpected error"
-                }
-             }
-          }
-       },
-       "/test": {
-          "get": {
-             "description": "Get Users details",
-             "responses": {
-                "200": {
-                   "description": "successful operation VV"
-                }
-             }
-          }
-       },
-       "/api/auth/me": {
-          "get": {
-             "description": "Get Users details",
-             "security": [
-                {
-                   "bearerAuth": []
-                }
-             ],
-             "responses": {
-                "200": {
-                   "description": "successful operation vvvv"
-                },
-                "400": {
-                   "description": "Invalid status value"
-                }
-             }
-          }
-       }
-    }
- }
+   "openapi": "3.0.0",
+   "info": {
+      "version": "1.0.0",
+      "title": "Sonic API documentaion",
+      "description": "This is a sample server for a sonic apis",
+      "termsOfService": "http://example.com/terms/",
+      "contact": {
+         "name": "Sonic API Support",
+         "url": "http://www.example.com/support",
+         "email": "support@example.com"
+      }
+   },
+   "servers": [
+      {
+         "url": "http://localhost:1337",
+         "description": "Optional server description, e.g. Main (production) server"
+      }
+   ],
+   "components": {
+      "securitySchemes": {
+         "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+         }
+      },
+      "schemas": {
+         "ADGroups": {
+            "type": "object",
+            "properties": {
+               "_id": {
+                  "type": "string",
+                  "description": "unique document id"
+               },
+               "name": {
+                  "type": "string",
+                  "description": "user name."
+               },
+               "email": {
+                  "type": "string",
+                  "description": "user email."
+               },
+               "_v": {
+                  "type": "integer",
+                  "description": "default monogo _v value"
+               }
+            }
+         },
+         "User": {
+            "type": "object",
+            "properties": {
+               "_id": {
+                  "type": "string",
+                  "description": "unique document id"
+               },
+               "name": {
+                  "type": "string",
+                  "description": "user name."
+               },
+               "email": {
+                  "type": "string",
+                  "description": "user email."
+               },
+               "_v": {
+                  "type": "integer",
+                  "description": "default monogo _v value"
+               }
+            }
+         },
+         "Error": {
+            "type": "object",
+            "properties": {
+               "message": {
+                  "type": "string",
+                  "description": "error message"
+               }
+            }
+         }
+      }
+   },
+   "paths": {
+      "/api/auth/login": {
+         "post": {
+            "summary": "User login with SOEID or FID in AD",
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "type": "object",
+                        "properties": {
+                           "domain": {
+                              "type": "string"
+                           },
+                           "user": {
+                              "type": "string"
+                           },
+                           "password": {
+                              "type": "string"
+                           }
+                        }
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "successful operation",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {
+                              "token": {
+                                 "type": "string",
+                                 "example": "e9029fc0-7d49-11eb-9141-0fb14601c83d"
+                              }
+                           }
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "The specified user ID/password incorrect",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "object",
+                           "properties": {
+                              "message": {
+                                 "type": "string",
+                                 "example": "user id or password incorrec 1t"
+                              }
+                           }
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "User Not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Error"
+                        }
+                     }
+                  }
+               },
+               "default": {
+                  "description": "Unexpected error",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Error"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/api/auth/teams": {
+         "get": {
+            "description": "Get teams/AD Groups that the user belongs",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Success",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/ADGroups"
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "Bad request",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Error"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "User Not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Error"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "/api/auth/me": {
+         "get": {
+            "description": "Get Users details",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Success",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/User"
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "Bad request",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Error"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "User Not found",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Error"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+}

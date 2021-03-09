@@ -17,6 +17,44 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+  schemas:
+    ADGroups: #NEED TO UPDATE TO RETURN ARRARY OF AD GROUPS ??????
+      type: object
+      properties:
+        _id:
+          type: string
+          description: unique document id
+        name:
+          type: string
+          description: user name.
+        email:
+          type: string
+          description: user email.
+        _v:
+          type: integer
+          description: default monogo _v value
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: unique document id
+        name:
+          type: string
+          description: user name.
+        email:
+          type: string
+          description: user email.
+        _v:
+          type: integer
+          description: default monogo _v value
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: error message
+          # example: 'user not found'
 paths:
   /api/auth/login:
     post:
@@ -36,7 +74,7 @@ paths:
                   type: string
 
       responses:
-        200:
+        '200':
           description: successful operation
           content:
             application/json:
@@ -55,27 +93,70 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "user id or password incorrect"
+                    example: "user id or password incorrec 1t"
+        
         '404':
-          description: A user with the specified ID was not found.
+          description: User Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         default:
           description: Unexpected error
-                    
-  /test:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /api/auth/teams:
     get:
-      description: Get Users details
+      description: Get teams/AD Groups that the user belongs
+      security:
+        - bearerAuth: []
       responses:
-        200:
-          description: successful operation VV
-          
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ADGroups'
+        # These two error responses have the same schema
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
   /api/auth/me:
     get:
       description: Get Users details
       security:
         - bearerAuth: []
       responses:
-        "200":
-          description: "successful operation vvvv"
-        "400":
-          description: "Invalid status value"
-          
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+        # These two error responses have the same schema
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

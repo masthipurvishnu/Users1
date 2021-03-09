@@ -56,7 +56,11 @@ router.post('/login', function(req, res){
         if(foundUser.password !== req.body.password){
             return res.status(403).send({message: 'email or password incorrect'}) 
         }
-        Session.create({user: foundUser._id, sid: uuid.v1()}, function(err, createdSession){
+        const token = `Bearer ${uuid.v1()}`
+        console.log("token value - ")
+
+        console.log("token", token)
+        Session.create({user: foundUser._id, sid: token}, function(err, createdSession){
             console.log('===================1')
             if(err || !createdSession) {
                 return res.status(401).send(err || "error creating session")
